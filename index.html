@@ -1,2 +1,73 @@
-<h1>Hello!</h1>
-<p>This is the beginning of transcendence 🤖</p>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Firebase Google Login</title>
+</head>
+<body>
+  <h2>User 1</h2>
+  <div id="user1-info"></div>
+  <button onclick="loginUser1()">Login User 1</button>
+  <button onclick="logoutUser1()">Logout User 1</button>
+
+  <h2>User 2</h2>
+  <div id="user2-info"></div>
+  <button onclick="loginUser2()">Login User 2</button>
+  <button onclick="logoutUser2()">Logout User 2</button>
+
+
+  <script type="module">
+  	import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js';
+
+  	// Your web app's Firebase configuration
+  	const firebaseConfig = {
+  	  apiKey: "AIzaSyCVwXSLqcKpYuGH59vRVi7XzrlXyH_b0uk",
+  	  authDomain: "testcendence.firebaseapp.com",
+	  projectId: "testcendence",
+   	  storageBucket: "testcendence.firebasestorage.app",
+      messagingSenderId: "835161261516",
+      appId: "1:835161261516:web:f85013acc876e81b788969"
+  	};
+
+    // Initialize Firebase apps
+    const app1 = initializeApp(firebaseConfig);
+    const auth1 = getAuth(app1);
+
+    const app2 = initializeApp(firebaseConfig, "Secondary");
+    const auth2 = getAuth(app2);
+
+    const provider = new GoogleAuthProvider();
+
+    // Functions for User 1
+    window.loginUser1 = () => {
+      signInWithPopup(auth1, provider)
+        .then(result => {
+          const user = result.user;
+          document.getElementById("user1-info").textContent = `User 1: ${user.displayName}`;
+        });
+    };
+
+    window.logoutUser1 = () => {
+      signOut(auth1).then(() => {
+        document.getElementById("user1-info").textContent = "User 1: Logged out";
+      });
+    };
+
+    // Functions for User 2
+    window.loginUser2 = () => {
+      signInWithPopup(auth2, provider)
+        .then(result => {
+          const user = result.user;
+          document.getElementById("user2-info").textContent = `User 2: ${user.displayName}`;
+        });
+    };
+
+    window.logoutUser2 = () => {
+      signOut(auth2).then(() => {
+        document.getElementById("user2-info").textContent = "User 2: Logged out";
+      });
+    };
+
+  </script>
+</body>
+</html>
